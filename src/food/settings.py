@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third party
-    'rest_framework'
+    'rest_framework',
+    # local import
+    'base',
+    'user',
+    'restaurant',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +143,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
+
+AUTH_USER_MODEL = 'user.User'

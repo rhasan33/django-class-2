@@ -1,22 +1,23 @@
+from uuid import uuid4
+
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+
+from base.models import BaseModel
 
 
-class Restaurant(models.Model):
+class Restaurant(BaseModel):
     class StatusChoices(models.TextChoices):
         ACTIVE = 'active', 'active'
         INACTIVE = 'inactive', 'inactive'
 
     name = models.CharField(max_length=150)
-    slug = models.CharField(max_length=180, unique=True)
+    slug = models.UUIDField(editable=False, default=uuid4, unique=True)
     address = models.TextField()
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_active = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=StatusChoices.choices, default=StatusChoices.INACTIVE)
-    meta = JSONField(default=dict)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    meta = models.JSONField(default=dict)
 
     class Meta:
         db_table = 'restaurants'
