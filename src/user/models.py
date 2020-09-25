@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 
 class FoodUserManager(BaseUserManager):
     def create_user(self, email, username, password, **extra_fields):
-        print(extra_fields)
         if not email:
             raise ValueError(_('The Email must be set'))
         if not username:

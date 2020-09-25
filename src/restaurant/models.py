@@ -18,6 +18,7 @@ class Restaurant(BaseModel):
     is_active = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=StatusChoices.choices, default=StatusChoices.INACTIVE)
     meta = models.JSONField(default=dict)
+    owner = models.ForeignKey('user.User', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = 'restaurants'
