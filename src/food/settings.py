@@ -140,14 +140,17 @@ STATIC_URL = '/static/'
 # rest framework
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+        'food.renderer.DefaultRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'food.pagination.CustomPagination',
+    'PAGE_SIZE': 8,
 }
 
 AUTH_USER_MODEL = 'user.User'

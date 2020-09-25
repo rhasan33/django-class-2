@@ -5,7 +5,11 @@ from django.views import View
 from django.http import JsonResponse
 from django.db import IntegrityError
 
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
+
 from restaurant.models import Restaurant
+from restaurant.serializers import RestaurantSerializer
 
 
 class AdminRestaurantView(View):
@@ -28,7 +32,7 @@ class AdminRestaurantView(View):
                 created_by=request.user
             )
             restaurant.save()
-            return JsonResponse({'message': 'restaurant created'}, status=201)
+            return JsonResponse({'data': self._searializer(restaurant)}, status=201)
         except IntegrityError as e:
             print(e)
             return JsonResponse({'message': f'cannot create restaurant. reason: {e}'}, status=400)
@@ -38,3 +42,12 @@ class AdminRestaurantView(View):
             return JsonResponse({'message': 'user need to login'}, status=400)
         return JsonResponse(data=[self._searializer(restaurant=res) for res in Restaurant.objects.all()], safe=False,
                             status=200)
+
+
+class AdminDRFRestaurantView(ListCreateAPIView):
+    serializer_class = RestaurantSerializer
+    queryset = Restaurant.objects.filter()
+    permission_classes = [IsAuthenticated, ]
+
+
+

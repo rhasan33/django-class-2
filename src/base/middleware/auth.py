@@ -11,6 +11,7 @@ class AuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        setattr(request, '_dont_enforce_csrf_checks', True)
         token_header: str = request.headers.get('authorization')
         if token_header:
             token = token_header.split(' ')[1]

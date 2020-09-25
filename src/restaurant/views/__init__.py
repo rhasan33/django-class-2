@@ -1,1 +1,1 @@
-from restaurant.views.admin.views import AdminRestaurantView
+from restaurant.views.admin.views import AdminRestaurantView, AdminDRFRestaurantView
