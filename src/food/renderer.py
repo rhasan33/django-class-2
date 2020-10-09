@@ -1,3 +1,5 @@
+from typing import Dict, Union
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
@@ -45,7 +47,7 @@ STATUS_MESSAGES = {
 class DefaultRenderer(JSONRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):
         response: Response = renderer_context['response']
-        response_data = {'success': (response.status_code // 100) not in (4, 5)}
+        response_data: Union[Dict, object] = {'success': (response.status_code // 100) not in (4, 5)}
         if response_data['success']:
             if data:
                 if 'message' in data or 'meta_data' in data or 'data' in data:
