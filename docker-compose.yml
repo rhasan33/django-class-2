@@ -33,33 +33,26 @@ services:
     env_file:
       - .env
 
-#  flower:
-#    image: mher/flower
-#    environment:
-#      - CELERY_BROKER_URL=redis://redis:6379/
-#      - FLOWER_PORT=8888
-#    ports:
-#      - 5555:8888
-#    depends_on:
-#      - celery-worker
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/
+      - FLOWER_PORT=8888
+    ports:
+      - 5555:8888
+    depends_on:
+      - worker
 
-#  worker:
-#    build: .
-#    links:
-#      - db:db
-#      - redis:redis
-#    command: bash -c "cd src/ && celery -A ecom.celery worker -l info --concurrency=4"
-#    depends_on:
-#      - db
-#      - redis
-#    volumes:
-#      - ./src:/app/src
-#    environment:
-#      - DB_HOST=db
-#      - DB_USER=ecom
-#      - DB_PASS=12345
-#      - DB_PORT=5432
-#      - DB_NAME=ecom
-#      - DEBUG=True
-#      - SECRET_KEY=m7ai5_&crfg7+u8x^ocvd1ha=mf_jwo)+%!iwk#_(dfl_n6#&!
-#      - REDIS_HOST=redis
+  worker:
+    build: .
+    links:
+      - db:db
+      - redis:redis
+    command: bash -c "cd src/ && celery -A food.celery worker -l INFO --concurrency=4"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env

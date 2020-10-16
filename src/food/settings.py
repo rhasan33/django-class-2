@@ -156,3 +156,16 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'user.User'
 
 APPEND_SLASH = False
+
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_URL = "redis://{}:6379/".format(REDIS_HOST)
+
+# celery
+CELERY_BROKER_URL = REDIS_URL
+result_backend = REDIS_URL
+accept_content = ['application/json']
+task_serializer = 'json'
+result_serializer = 'json'
+timezone = 'UTC'
+result_expires = 3600
+CELERY_TASK_DEFAULT_QUEUE = 'food.celery'

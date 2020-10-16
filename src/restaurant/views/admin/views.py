@@ -12,6 +12,7 @@ from rest_framework import status
 
 from restaurant.models import Restaurant
 from restaurant.serializers import RestaurantSerializer
+from restaurant.tasks import add_search_score
 
 
 # class AdminRestaurantView(View):
@@ -57,6 +58,12 @@ class AdminRestaurantGetUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Restaurant.objects.filter()
     permission_classes = [IsAuthenticated, ]
     lookup_field = 'pk'
+
+    def retrieve(self, request, *args, **kwargs):
+        obj: Restaurant = self.get_object()
+        add_search_score.delay(res_id=obj.id)
+        print(obj.pk)
+        return super(AdminRestaurantGetUpdateDestroyView, self).retrieve(request, *args, **kwargs)
 
     # def destroy(self, request, *args, **kwargs):
     #     obj: Restaurant = self.get_object()

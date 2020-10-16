@@ -12,6 +12,7 @@ class Restaurant(BaseModel):
 
     name = models.CharField(max_length=150)
     slug = models.UUIDField(editable=False, default=uuid4, unique=True)
+    hit_score = models.FloatField(default=0.0)
     address = models.TextField()
     latitude = models.FloatField()
     longitude = models.FloatField()
