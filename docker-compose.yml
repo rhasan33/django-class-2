@@ -56,3 +56,18 @@ services:
       - ./src:/app/src
     env_file:
       - .env
+
+
+  cron:
+    build: .
+    links:
+      - db:db
+      - redis:redis
+    command: bash -c "cd src/ && celery -A food.celery beat"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
