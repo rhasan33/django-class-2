@@ -13,6 +13,7 @@ from rest_framework import status
 from restaurant.models import Restaurant
 from restaurant.serializers import RestaurantSerializer
 from restaurant.tasks import add_search_score
+from user.permissions import IsSuperuser, IsRestaurantAdmin
 
 
 # class AdminRestaurantView(View):
@@ -50,13 +51,13 @@ from restaurant.tasks import add_search_score
 class AdminDRFRestaurantView(ListCreateAPIView):
     serializer_class = RestaurantSerializer
     queryset = Restaurant.objects.filter()
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, (IsSuperuser | IsRestaurantAdmin)]
 
 
 class AdminRestaurantGetUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class = RestaurantSerializer
     queryset = Restaurant.objects.filter()
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, (IsSuperuser | IsRestaurantAdmin)]
     lookup_field = 'pk'
 
     def retrieve(self, request, *args, **kwargs):
